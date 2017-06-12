@@ -19,22 +19,30 @@ const Game = function() {
     console.log("Player 2, You will be O's.")
 
     while(!won) {
+      // Print board
       this.prettyPrint();
+
+      // Let appropriate user take turn
       nextTurn = 0 ? (
         this.markBoard(player1.takeTurn(), player1.marker)
       ) : (
         this.markBoard(player2.takeTurn(), player2.marker)
       );
+
+      // Check board
       won = this.checkBoard();
       if(won) {
+        // If winner...
         let winner = (currTurn === 0 ? player1 : player2);
         console.log(`Congratulations ${winner.name}, you've won!`);
       }
+      // Alternate between players
       currTurn = (currTurn === 0 ? 1 : 0);
     }
   };
 
   this.markBoard = function([i, j], marker) {
+    // Add players turn to board
     if(board[j-1][i-1] !== '') {
       console.log('This spot is taken. You lose your turn.')
     } else {
@@ -43,13 +51,17 @@ const Game = function() {
   };
 
   this.checkRow = function(row) {
-    let flag = true;
-    row.forEach(item => {
-      if(item === '') {
-        flag = false;
+    // Check for empty spot
+    for(let i = 0; i < 3; i++) {
+      if(row[i] === '') {
+        return false
       }
     })
-    return flag
+
+    // Check for all X's or O's
+    let markers = ['X', 'O']
+
+
   };
 
   this.checkRows = function() {
@@ -67,18 +79,26 @@ const Game = function() {
     board.forEach(row => {
       row.forEach((item, colIndex) => cols[colIndex].push(item))
     })
-    let flag = true;
+    let flag = false;
     for(let i = 0; i < 3; i++) {
       if(!checkRow(cols[i])) {
-        flag = false
+
       }
     }
     return flag
   };
 
+  this.checkDiag1 = function() {
+
+  }
+
+  this.checkDiag2 = function() {
+
+  }
+
   this.checkBoard = function() {
     // returns false if board is incomplete
-    return this.checkRows() && this.checkColumns()
+    return this.checkRows() || this.checkColumns() || this.checkDiag1() || this.checkDiag2()
   };
 
   this.prettyPrint = function() {
